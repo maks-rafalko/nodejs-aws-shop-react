@@ -10,7 +10,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/" underline="hover">
-        Maks AWS Super Store
+        Maks AWS Super Store v2.1
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
