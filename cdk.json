@@ -1,5 +1,5 @@
 {
-  "app": "dist-cdk/main.js",
+  "app": "npx ts-node --prefer-ts-exts cdk/src/main.ts",
   "context": {
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:checkSecretUsage": true,
