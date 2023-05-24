@@ -3,6 +3,8 @@ import { Construct } from 'constructs';
 import { aws_s3 as s3 } from 'aws-cdk-lib';
 import * as S3Deployment from 'aws-cdk-lib/aws-s3-deployment';
 import * as path from "path";
+import { Distribution, OriginAccessIdentity } from 'aws-cdk-lib/aws-cloudfront';
+import { S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
 
 export class ShopStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -12,10 +14,7 @@ export class ShopStack extends cdk.Stack {
       versioned: true,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
-      websiteIndexDocument: 'index.html',
-      websiteErrorDocument: 'index.html',
-      // TODO remove it after cloudfront setup
-      publicReadAccess: true,
+      accessControl: s3.BucketAccessControl.PRIVATE,
     });
 
     new S3Deployment.BucketDeployment(this, 'ShopStaticSiteServeBucketDeployment', {
@@ -23,10 +22,24 @@ export class ShopStack extends cdk.Stack {
       sources: [S3Deployment.Source.asset(path.resolve(__dirname, '..', '..', '..', '..', 'dist'))],
     });
 
+    const originAccessIdentity = new OriginAccessIdentity(this, 'OriginAccessIdentity');
+    bucket.grantRead(originAccessIdentity);
+
+    const cloudFrontDistribution = new Distribution(this, 'Distribution', {
+      defaultRootObject: 'index.html',
+      defaultBehavior: {
+        origin: new S3Origin(bucket, {originAccessIdentity}),
+      },
+    })
+
     new cdk.CfnOutput(this, 'bucketUrl', {
       value: bucket.bucketWebsiteUrl,
-      description: 'The URL of the bucket',
       exportName: 'ShopStaticSiteServeBucketURL',
+    });
+
+    new cdk.CfnOutput(this, 'cloudfrontUrl', {
+      value: cloudFrontDistribution.distributionDomainName,
+      exportName: 'CloudFrontDistributionURL',
     });
   }
 }
