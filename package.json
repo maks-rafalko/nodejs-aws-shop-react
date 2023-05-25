@@ -6,7 +6,7 @@
     "start": "vite",
     "build": "tsc && vite build",
     "deploy": "npm run build && cdk deploy",
-    "deploy-diff": "npm run build && cdk diff",
+    "deploy:diff": "npm run build && cdk diff",
     "preview": "npm run build && vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
