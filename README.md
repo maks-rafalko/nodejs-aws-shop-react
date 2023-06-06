@@ -15,6 +15,11 @@ This is frontend starter project for nodejs-aws mentoring program. It uses the f
 - [Prettier](https://prettier.io/) as a code formatting tool
 - [TypeScript](https://www.typescriptlang.org/) as a type checking tool
 
+## Deployed application demo
+
+* http://shopstack-shopstaticsiteservebucket56451a5b-143scj5ju9ezk.s3-website-us-east-1.amazonaws.com - S3 bucket, returns 403, this is just to show that bucket is not publicly available
+* https://d1yr9zv5davrmu.cloudfront.net/ - deployed application to CloudFront
+
 ## Available Scripts
 
 ### `start`
@@ -28,6 +33,16 @@ Builds the project for production in `dist` folder.
 ### `preview`
 
 Starts the project in production mode on local environment.
+
+### `deploy`
+
+Builds the project for production in `dist` folder and then deploys the site to closed S3 bucket and distribute via CloudFront.
+
+> It assumes `cdk` is installed globally.
+
+### `deploy:diff`
+
+Builds the project and show the diff in infrastructure using `cdk diff`.
 
 ### `test`, `test:ui`, `test:coverage`
 
